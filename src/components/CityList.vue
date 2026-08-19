@@ -18,15 +18,16 @@ const showDetail = (cityName, status) => {
     <h2>🏙️ 지역 별 날씨 현황</h2>
     <div class="city" v-for="city in weatherList" :key="city.id">
       <div class="city-info" @click="((cityStatus = true), (selectCity = city.name))">
-        <p class="city-name">{{ city.name }} ({{ city.status }})</p>
-        <p class="city-temp">현재 기온: {{ city.temp }}°C</p>
-        <span class="badge" :class="city.temp >= 28 ? 'badge-hot' : 'badge-cool'">
-          {{ city.temp >= 28 ? '🔥 더움 (28도 이상)' : '❄️ 선선함 (28도 미만)' }}
-        </span>
+        <div class="city-text">
+          <p class="city-name">{{ city.name }} ({{ city.status }})</p>
+          <p class="city-temp">현재 기온: {{ city.temp }}°C</p>
+          <span class="badge badge-hot" v-if="city.temp >= 28">🔥 더움 (28도 이상)</span>
+          <span class="badge badge-cool" v-else>❄️ 선선함 (28도 미만)</span>
+        </div>
+        <button class="detail-btn" type="button" @click.stop="showDetail(city.name, city.status)">
+          상세보기
+        </button>
       </div>
-      <button class="detail-btn" type="button" @click="showDetail(city.name, city.status)">
-        상세보기
-      </button>
     </div>
   </div>
   <div class="footer-message">
@@ -64,6 +65,14 @@ const showDetail = (cityName, status) => {
 
 .city:last-child {
   margin-bottom: 0;
+}
+
+.city-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 }
 
 .city-name {

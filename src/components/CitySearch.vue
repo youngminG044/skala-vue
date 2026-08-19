@@ -8,7 +8,12 @@ const findCity = ref('')
   <div class="search-section">
     <h2>🔍 도시 검색</h2>
     <label for="city-search-input">도시 이름</label>
-    <input id="city-search-input" type="text" v-model.lazy="findCity" placeholder="검색할 도시 이름 입력" />
+    <input
+      id="city-search-input"
+      type="text"
+      v-model.lazy="findCity"
+      placeholder="검색할 도시 이름 입력"
+    />
     <p class="search-status">
       검색 중인 도시: <strong>{{ findCity }}</strong>
     </p>
