@@ -11,7 +11,8 @@ const findCity = ref('')
     <input
       id="city-search-input"
       type="text"
-      v-model.lazy="findCity"
+      :value="findCity"
+      @input="(e) => (findCity = e.target.value)"
       placeholder="검색할 도시 이름 입력"
     />
     <p class="search-status">
