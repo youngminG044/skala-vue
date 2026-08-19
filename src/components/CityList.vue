@@ -4,9 +4,10 @@ import { ref } from 'vue'
 const cityStatus = ref(false)
 const selectCity = ref('')
 const weatherList = ref([
-  { id: 'city_01', name: '서울', temp: 28, status: '맑음' },
-  { id: 'city_02', name: '수원', temp: 24, status: '비' },
-  { id: 'city_03', name: '부산', temp: 26, status: '구름' },
+  { id: 'city_01', name: '서울특별시', temp: 28, status: '맑음' },
+  { id: 'city_02', name: '수원시', temp: 24, status: '비' },
+  { id: 'city_03', name: '부산광역시', temp: 26, status: '구름' },
+  { id: 'city_04', name: '광주광역시', temp: 30, status: '흐림'},
 ])
 const showDetail = (cityName, status) => {
   window.alert(`${cityName}의 현재 날씨는 [${status}] 상태입니다.`)
