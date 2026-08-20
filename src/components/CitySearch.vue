@@ -1,39 +1,36 @@
 <script setup>
-import { ref, computed, watchEffect } from 'vue'
-
-const props = defineProps({
-  weatherList: {
-    type: Array,
+// 반응형 데이터는 부모(WeatherParent)가 가짐.
+// 여기서는 전달받은 검색어를 props하고, 입력이 바뀌면 부모에게 emits.
+defineProps({
+  findCity: {
+    type: String,
+    required: true,
+  },
+  keyword: {
+    type: String,
+    required: true,
+  },
+  isCity: {
+    type: Boolean,
     required: true,
   },
 })
 
-const findCity = ref('')
+const emit = defineEmits(['update-query'])
 
-const keyword = computed(() => findCity.value.trim())
-
-const filteredWeatherList = computed(() => {
-  if (keyword.value === '') return []
-  return props.weatherList.filter((city) => city.name.includes(keyword.value))
-})
-const isCity = computed(() => filteredWeatherList.value.length > 0)
-
-watchEffect(() => {
-  console.log(
-    `[watchEffect 자동 호출] 현재 검색어 '${findCity.value}'에 매칭되는 API 데이터를 필터링 중...`,
-  )
-})
+const sendText = (e) => {
+  emit('update-query', e.target.value)
+}
 </script>
 
 <template>
   <div class="search-section">
-    <h2>🔍 도시 검색</h2>
-    <label for="city-search-input">도시 이름</label>
+    <label class="sr-only" for="city-search-input">도시 이름</label>
     <input
       id="city-search-input"
       type="text"
       :value="findCity"
-      @input="(e) => (findCity = e.target.value)"
+      @input="sendText"
       placeholder="검색할 도시 이름 입력"
     />
     <p class="search-status" v-if="isCity">
@@ -46,37 +43,51 @@ watchEffect(() => {
 </template>
 
 <style scoped>
-.search-section {
-  background-color: #eef5f9;
-  border-radius: 10px;
-  padding: 16px;
-  margin-bottom: 16px;
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
-.search-section h2 {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 15px;
-  margin: 0 0 12px;
-}
-
-.search-section input {
+input {
+  display: block;
   width: 100%;
   box-sizing: border-box;
-  padding: 10px 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  padding: 9px 12px;
   font-size: 14px;
+  color: #2c3e50;
+  background-color: #fff;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  outline: none;
+}
+
+input::placeholder {
+  color: #adb5bd;
+}
+
+input:focus {
+  border-color: #74b0f4;
+  box-shadow: 0 0 0 2px rgba(116, 176, 244, 0.25);
 }
 
 .search-status {
-  margin: 8px 0 0;
+  margin: 10px 0 0;
   font-size: 13px;
-  color: #666;
+  color: #6c757d;
+}
+
+.search-status strong {
+  color: #2c3e50;
 }
 
 .search-status-empty {
-  color: #e2574c;
+  color: #d9534f;
 }
 </style>

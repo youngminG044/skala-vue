@@ -1,66 +1,57 @@
+<!--
+  CityList.vue
+  - 지역별 날씨 목록. 목록을 받아 카드로 그려주기만 하는 자식 컴포넌트.
+  - 클릭이 일어나면 직접 상태를 바꾸지 않고 이벤트만 부모에게 올려보냄.
+-->
 <script setup>
-import { ref } from 'vue'
-import SelectedInfo from './SelectedInfo.vue'
-
 defineProps({
+  // 화면에 그릴 날씨 목록. { id, name, temp, status } 객체의 배열
   weatherList: {
     type: Array,
     required: true,
   },
 })
 
-const cityStatus = ref(false)
-const selectCity = ref('')
-const showDetail = (cityName, status) => {
-  window.alert(`${cityName}의 현재 날씨는 [${status}] 상태입니다.`)
-}
+// 선택/상세보기 상태는 부모(WeatherParent)가 관리하므로 이벤트만 올려보냄.
+// select: 카드 클릭 / detail: 상세보기 버튼 클릭
+const emit = defineEmits(['select', 'detail'])
 </script>
 
 <template>
   <div class="list-section">
-    <h2>🏙️ 지역 별 날씨 현황</h2>
+    <!-- v-for로 배열을 순회해 도시 카드를 반복 생성. :key로 각 항목을 구분.-->
     <div class="city" v-for="city in weatherList" :key="city.id">
-      <div class="city-info" @click="((cityStatus = true), (selectCity = city.name))">
+      <!-- 카드 영역 클릭 -> 어떤 도시가 눌렸는지 객체째로 부모에게 전달 -->
+      <div class="city-info" @click="emit('select', city)">
         <div class="city-text">
+          <!-- {{ }} 안의 값이 바뀌면 해당 부분만 자동으로 다시 그려짐 -->
           <p class="city-name">{{ city.name }} ({{ city.status }})</p>
           <p class="city-temp">현재 기온: {{ city.temp }}°C</p>
+
+          <!-- 기온에 따라 둘 중 하나의 뱃지만 렌더링 -->
           <span class="badge badge-hot" v-if="city.temp >= 28">🔥 더움 (28도 이상)</span>
           <span class="badge badge-cool" v-else>❄️ 선선함 (28도 미만)</span>
         </div>
-        <button class="detail-btn" type="button" @click.stop="showDetail(city.name, city.status)">
+
+        <!--
+          .stop = event.stopPropagation()
+          버튼 클릭이 바깥 .city-info의 click까지 번지지 않도록 막음.
+        -->
+        <button class="detail-btn" type="button" @click.stop="emit('detail', city)">
           상세보기
         </button>
       </div>
     </div>
   </div>
-  <SelectedInfo :city-status="cityStatus" :select-city="selectCity" />
 </template>
 
 <style scoped>
-.list-section {
-  background-color: #eef5f9;
-  border-radius: 10px;
-  padding: 16px;
-}
-
-.list-section h2 {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 15px;
-  margin: 0 0 12px;
-}
-
 .city {
   background-color: #fff;
-  border: 1px solid #eee;
+  border: 1px solid #e6eaed;
   border-radius: 8px;
   padding: 14px 16px;
   margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
 }
 
 .city:last-child {
@@ -68,53 +59,60 @@ const showDetail = (cityName, status) => {
 }
 
 .city-info {
-  flex: 1;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
+  cursor: pointer;
+}
+
+.city-text {
+  min-width: 0;
 }
 
 .city-name {
-  margin: 0;
-  font-size: 14px;
-  font-weight: 700;
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #2c3e50;
 }
 
 .city-temp {
-  margin: 4px 0 8px;
-  font-size: 13px;
-  color: #555;
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: #46586b;
 }
 
 .badge {
   display: inline-block;
-  padding: 3px 10px;
-  border-radius: 4px;
+  padding: 5px 11px;
+  border-radius: 14px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   color: #fff;
+  white-space: nowrap;
 }
 
 .badge-hot {
-  background-color: #e2574c;
+  background-color: #fa5a5a;
 }
 
 .badge-cool {
-  background-color: #4a90d9;
+  background-color: #4d94f0;
 }
 
 .detail-btn {
   flex-shrink: 0;
-  padding: 8px 14px;
-  background-color: #f5f5f5;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  padding: 6px 12px;
   font-size: 13px;
+  color: #495057;
+  background-color: #f1f3f5;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
   cursor: pointer;
 }
 
 .detail-btn:hover {
-  background-color: #e9e9e9;
+  background-color: #e9ecef;
 }
 </style>
