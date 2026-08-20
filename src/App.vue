@@ -1,14 +1,22 @@
 <script setup>
+import { ref } from 'vue'
 import Search from './components/CitySearch.vue'
 import City from './components/CityList.vue'
+
+const weatherList = ref([
+  { id: 'city_01', name: '서울특별시', temp: 28, status: '맑음' },
+  { id: 'city_02', name: '수원시', temp: 24, status: '비' },
+  { id: 'city_03', name: '부산광역시', temp: 26, status: '구름' },
+  { id: 'city_04', name: '광주광역시', temp: 30, status: '흐림' },
+])
 </script>
 
 <template>
   <div class="container">
-    <h1>🌤️ 과제 1: 날씨 (Mockup)</h1>
+    <h1>🌤️ 날씨 대시보드</h1>
     <hr />
-    <Search />
-    <City />
+    <Search :weather-list="weatherList" />
+    <City :weather-list="weatherList" />
   </div>
 </template>
 

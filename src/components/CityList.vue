@@ -1,14 +1,16 @@
 <script setup>
 import { ref } from 'vue'
+import SelectedInfo from './SelectedInfo.vue'
+
+defineProps({
+  weatherList: {
+    type: Array,
+    required: true,
+  },
+})
 
 const cityStatus = ref(false)
 const selectCity = ref('')
-const weatherList = ref([
-  { id: 'city_01', name: '서울특별시', temp: 28, status: '맑음' },
-  { id: 'city_02', name: '수원시', temp: 24, status: '비' },
-  { id: 'city_03', name: '부산광역시', temp: 26, status: '구름' },
-  { id: 'city_04', name: '광주광역시', temp: 30, status: '흐림'},
-])
 const showDetail = (cityName, status) => {
   window.alert(`${cityName}의 현재 날씨는 [${status}] 상태입니다.`)
 }
@@ -31,10 +33,7 @@ const showDetail = (cityName, status) => {
       </div>
     </div>
   </div>
-  <div class="footer-message">
-    <p v-if="cityStatus == false">카드를 클릭하거나 검색해 보세요.</p>
-    <p v-else>{{ selectCity }}이(가) 선택되었습니다.</p>
-  </div>
+  <SelectedInfo :city-status="cityStatus" :select-city="selectCity" />
 </template>
 
 <style scoped>
@@ -117,16 +116,5 @@ const showDetail = (cityName, status) => {
 
 .detail-btn:hover {
   background-color: #e9e9e9;
-}
-
-.footer-message {
-  margin-top: 16px;
-  padding: 12px;
-  background-color: #e5f6ea;
-  color: #1f7a3f;
-  border-radius: 8px;
-  text-align: center;
-  font-weight: 600;
-  font-size: 14px;
 }
 </style>
