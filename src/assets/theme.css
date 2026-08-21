@@ -1,0 +1,68 @@
+/*
+  theme.css
+  - PrimeVue(Aura) 위에 이 앱만의 규칙을 얹는 전역 스타일.
+  - 컴포넌트 안에서 scoped로 쓸 수 없는 두 가지만 여기에 둔다.
+      1) 페이지 바탕과 기본 글꼴
+      2) PrimeVue가 body 바로 아래에 그리는 요소(Toast) 스타일
+
+  scoped 스타일이 Toast에 닿지 않는 이유:
+  PrimeVue는 Toast를 Teleport로 <body> 끝에 붙인다.
+  컴포넌트 밖으로 나가버리므로 scoped 선택자에 붙는 data 속성이 일치하지 않는다.
+*/
+
+body {
+  margin: 0;
+  background-color: #f4f6f8;
+  font-family:
+    'Malgun Gothic',
+    'Apple SD Gothic Neo',
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  color: #2c3e50;
+}
+
+/*
+  안내 문구(Toast)
+  PrimeVue 기본 모양 대신, 앞서 정한 디자인을 유지한다.
+    화면 우측 하단 / 배경 #c8e3d4 / 대시보드 카드와 비슷한 폭 / 큰 글씨
+*/
+.p-toast {
+  width: min(520px, calc(100vw - 40px));
+}
+
+.p-toast .p-toast-message {
+  border: none;
+  border-radius: 12px;
+  background: #c8e3d4;
+  /* 배경과 같은 색조(민트·그린)에 명도만 낮춘 색. 대비 약 7.4:1 */
+  color: #1c4a31;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.p-toast .p-toast-message-content {
+  display: flex;
+  align-items: center;
+  min-height: 150px;
+  padding: 24px 28px;
+}
+
+/*
+  작게 띄우면 화면 구석이라 바뀐 줄 모르고 지나친다.
+  App.vue에서 #message 슬롯으로 내용을 직접 그리므로 PrimeVue 기본
+  .p-toast-message-text 대신 그 슬롯 안의 .toast-body를 겨냥한다.
+*/
+.p-toast .toast-body {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+/* 닫기 버튼도 배경에 맞춰 같은 계열로 */
+.p-toast .p-toast-close-button {
+  color: #1c4a31;
+}
+
+.p-toast .p-toast-close-button:hover {
+  background: rgba(28, 74, 49, 0.1);
+}

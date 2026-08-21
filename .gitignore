@@ -37,3 +37,14 @@ __screenshots__/
 
 # Vite
 *.timestamp-*-*.mjs
+
+# 개인 작업 메모
+customization.md
+
+#트러블 슈팅
+troubleshooting.md
+
+# 환경 변수 (API KEY) - 예시 파일만 커밋한다
+.env
+.env.*
+!.env.example
