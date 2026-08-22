@@ -1,31 +1,44 @@
 /*
   theme.css
   - PrimeVue(Aura) 위에 이 앱만의 규칙을 얹는 전역 스타일.
-  - 컴포넌트 안에서 scoped로 쓸 수 없는 두 가지만 여기에 둔다.
+  - 컴포넌트 안에서 scoped로 쓸 수 없는 것만 여기에 둔다.
       1) 페이지 바탕과 기본 글꼴
       2) PrimeVue가 body 바로 아래에 그리는 요소(Toast) 스타일
 
   scoped 스타일이 Toast에 닿지 않는 이유:
   PrimeVue는 Toast를 Teleport로 <body> 끝에 붙인다.
   컴포넌트 밖으로 나가버리므로 scoped 선택자에 붙는 data 속성이 일치하지 않는다.
+
+  하늘 배경과 유리 패널 토큰은 glass.css 가 따로 들고 있다.
+  (색·투명도를 만지려면 그쪽 파일 하나만 보면 된다)
 */
+@import './glass.css';
 
 body {
   margin: 0;
-  background-color: #f4f6f8;
   font-family:
     'Malgun Gothic',
     'Apple SD Gothic Neo',
     -apple-system,
     BlinkMacSystemFont,
     sans-serif;
-  color: #2c3e50;
+  /*
+    유리 위에 얹히는 글씨라 기본 렌더링이 두껍게 뭉친다.
+    안티에일리어싱을 얇은 쪽으로 바꿔야 배경이 비치는 느낌이 산다.
+  */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /*
   안내 문구(Toast)
   PrimeVue 기본 모양 대신, 앞서 정한 디자인을 유지한다.
     화면 우측 하단 / 배경 #c8e3d4 / 대시보드 카드와 비슷한 폭 / 큰 글씨
+
+  하늘 배경(낮/노을/밤)이 생긴 뒤에도 이 색만은 유리로 바꾸지 않았다.
+  직접 지정한 색이고(customization.md 19-4의 예외 두 가지 중 하나),
+  안내 문구는 배경과 섞이기보다 확실히 눈에 띄는 편이 목적에 맞기 때문이다.
+  불투명한 상자라 어떤 하늘 위에서도 대비(약 7.4:1)가 그대로 유지된다.
 */
 .p-toast {
   width: min(520px, calc(100vw - 40px));
@@ -48,7 +61,6 @@ body {
 }
 
 /*
-  작게 띄우면 화면 구석이라 바뀐 줄 모르고 지나친다.
   App.vue에서 #message 슬롯으로 내용을 직접 그리므로 PrimeVue 기본
   .p-toast-message-text 대신 그 슬롯 안의 .toast-body를 겨냥한다.
 */

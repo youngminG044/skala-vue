@@ -23,7 +23,7 @@ import { useWeatherStore } from '@/stores/weather'
 
 // 라우터 인스턴스: 코드에서 화면을 이동시킬 때(router.push) 사용
 const router = useRouter()
-// 상단 대시보드 상태가 어느 도시를 보여줄지 알려주기 위한 스토어
+// 하늘 배경이 어느 도시의 시각을 따를지 알려주기 위한 스토어
 const selectedCityStore = useSelectedCityStore()
 // 실제 관측 데이터를 들고 있는 스토어
 const weatherStore = useWeatherStore()
@@ -33,7 +33,7 @@ const route = useRoute()
 // 화면에 그릴 원본 목록. 스토어가 API에서 채워준다.
 const weatherList = computed(() => weatherStore.weatherList)
 
-// 최초 요청은 App.vue가 한다. (경로와 무관하게 상단 요약이 늘 떠 있으므로)
+// 최초 요청은 App.vue가 한다. (경로와 무관하게 한 번만 받도록)
 // 여기서는 사용자가 직접 최신값을 요청할 때만 캐시를 무시하고 다시 받는다.
 const refresh = () => {
   weatherStore.loadAll(true)
@@ -92,7 +92,7 @@ const selectCity = ref('') // 선택된 도시 이름
 const selectCityInfo = (city) => {
   cityStatus.value = true
   selectCity.value = city.name
-  // 화면 상단 요약도 고른 도시를 따라가게 한다
+  // 하늘 배경도 고른 도시의 일출·일몰을 따라가게 한다
   selectedCityStore.selectCity(city.id)
 }
 
@@ -209,9 +209,15 @@ watchEffect(() => {
   그대로 두면 목록이 더 있다는 걸 모르고 지나치기 쉬워 항상 보이도록 지정한다.
   표준 속성(Firefox, 최신 Chrome)과 WebKit 확장(Safari)을 함께 둔다.
 */
+/*
+  트랙은 투명하게 두고 손잡이만 남긴다.
+  유리판 위에 불투명한 회색 홈이 파이면 그 부분만 재질이 끊겨 보인다.
+  손잡이 색은 surface-400 — 하늘이 바뀌면 램프가 뒤집히므로 낮에는 짙은 남색,
+  밤에는 밝은 은색이 되어 어느 배경에서도 보인다.
+*/
 .city-scroll {
   scrollbar-width: thin;
-  scrollbar-color: var(--p-surface-300) var(--p-surface-100);
+  scrollbar-color: var(--p-surface-400) transparent;
 }
 
 .city-scroll::-webkit-scrollbar {
@@ -219,17 +225,16 @@ watchEffect(() => {
 }
 
 .city-scroll::-webkit-scrollbar-track {
-  border-radius: 4px;
-  background-color: var(--p-surface-100);
+  background-color: transparent;
 }
 
 .city-scroll::-webkit-scrollbar-thumb {
-  border-radius: 4px;
-  background-color: var(--p-surface-300);
+  border-radius: 999px;
+  background-color: var(--p-surface-400);
 }
 
 .city-scroll::-webkit-scrollbar-thumb:hover {
-  background-color: var(--p-surface-400);
+  background-color: var(--p-surface-500);
 }
 
 .empty-message {

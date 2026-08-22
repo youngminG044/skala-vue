@@ -1,7 +1,7 @@
 /*
   selectedCity.js
   - "지금 보고 있는/고른 도시"를 앱 전체가 공유하는 Pinia 스토어.
-  - 상단 대시보드 상태가 어느 도시를 보여줄지 결정하는 데 쓴다.
+  - 하늘 배경(useSkyTheme)이 어느 도시의 일출·일몰을 기준으로 삼을지 결정하는 데 쓴다.
     목록에서 카드를 고르면 그 도시로, 상세 페이지에 들어가면 그 도시로 바뀐다.
   - 설정이 아니라 세션 상태라 localStorage에 저장하지 않는다.
     (새로 열면 대표 도시부터 보는 편이 자연스러움)
@@ -31,12 +31,9 @@ export const useSelectedCityStore = defineStore('selectedCity', () => {
     () => weatherStore.getCity(selectedCityId.value) ?? weatherStore.weatherList[0] ?? null,
   )
 
-  // 사용자가 직접 고른 상태인지 (안내 문구 분기에 사용)
-  const hasSelection = computed(() => weatherStore.getCity(selectedCityId.value) !== null)
-
   const selectCity = (cityId) => {
     selectedCityId.value = cityId
   }
 
-  return { selectedCityId, selectedCity, hasSelection, selectCity }
+  return { selectedCityId, selectedCity, selectCity }
 })

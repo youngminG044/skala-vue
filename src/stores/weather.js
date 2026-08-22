@@ -13,7 +13,7 @@ import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 
 import { fetchCityWeather, fetchForecast } from '@/api/weather'
-import { hasApiKey } from '@/api/http'
+import { hasWeatherApiKey } from '@/api/http'
 import { cities, findCityById } from '@/data/cities'
 
 // 받아온 데이터를 이 시간 동안은 다시 요청하지 않는다.
@@ -51,7 +51,7 @@ export const useWeatherStore = defineStore('weather', () => {
 
   const loadAll = (force = false) => {
     // API Key가 없으면 요청을 보내봐야 401이다. 그 전에 안내한다.
-    if (!hasApiKey) {
+    if (!hasWeatherApiKey) {
       error.value =
         'OpenWeatherMap API Key가 설정되지 않았습니다. .env.local 에 VITE_OPENWEATHER_API_KEY 를 넣고 개발 서버를 다시 시작해 주세요.'
       return Promise.resolve()
@@ -90,7 +90,7 @@ export const useWeatherStore = defineStore('weather', () => {
     목록에서 미리 4개 도시 예보까지 부르면 쓰지도 않을 요청이 늘어난다.
   */
   const loadForecast = async (cityId) => {
-    if (!hasApiKey) return
+    if (!hasWeatherApiKey) return
     if (forecastById.value[cityId] !== undefined) return // 이미 받아둔 것은 그대로 사용
 
     const city = findCityById(cityId)

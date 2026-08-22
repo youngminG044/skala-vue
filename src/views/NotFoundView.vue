@@ -32,13 +32,16 @@ import Card from 'primevue/card'
   display: flex;
   justify-content: center;
   padding: 40px 16px;
-  background-color: var(--p-surface-50);
-  border-radius: var(--p-border-radius-lg);
 }
 
-.not-found-card {
+/* 유리 2층. 다른 화면의 섹션 카드와 같은 재질. (.p-card 는 특이도용) */
+.p-card.not-found-card {
   width: min(360px, 100%);
   text-align: center;
+  background: var(--glass-panel);
+  border: 1px solid var(--glass-border-soft);
+  border-radius: var(--glass-radius-md);
+  box-shadow: var(--glass-shadow-sm);
 }
 
 .not-found-emoji {

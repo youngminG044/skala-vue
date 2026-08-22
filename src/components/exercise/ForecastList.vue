@@ -85,16 +85,53 @@ const displaySlots = computed(() => {
   padding: 0 0 6px;
   list-style: none;
   overflow-x: auto;
+  /*
+    기본 가로 스크롤바는 유리 위에서 회색 판처럼 통째로 튄다.
+    (color-scheme: dark 만으로는 플랫폼마다 결과가 달랐다)
+    트랙은 비우고 손잡이만 남겨 하늘이 그대로 비치게 한다.
+    감추지는 않는다 — 옆으로 더 있다는 걸 알려야 하기 때문. (customization.md 15-2)
+  */
+  scrollbar-width: thin;
+  scrollbar-color: var(--p-surface-400) transparent;
 }
 
+.forecast-list::-webkit-scrollbar {
+  height: 8px;
+}
+
+.forecast-list::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.forecast-list::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background-color: var(--p-surface-400);
+}
+
+.forecast-list::-webkit-scrollbar-thumb:hover {
+  background-color: var(--p-surface-500);
+}
+
+/*
+  예보 칸도 유리 3층. 가로로 8칸이 스크롤되므로 블러는 걸지 않는다.
+  (가로 스크롤은 세로보다 프레임 예산이 더 빡빡하다)
+*/
 .forecast-item {
   flex: 0 0 auto; /* 칸이 찌그러지지 않도록 축소를 막는다 */
   width: 72px;
   padding: 10px 6px;
-  border: 1px solid var(--p-surface-200);
-  border-radius: 8px;
-  background-color: var(--p-surface-50);
+  border: 1px solid var(--glass-border-soft);
+  border-radius: var(--glass-radius-sm);
+  background: var(--glass-inset);
   text-align: center;
+  transition:
+    background 200ms ease,
+    border-color 200ms ease;
+}
+
+.forecast-item:hover {
+  background: var(--glass-panel);
+  border-color: var(--glass-border);
 }
 
 .forecast-item p {

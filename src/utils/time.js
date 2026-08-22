@@ -43,3 +43,17 @@ export const formatDuration = (fromUnixSeconds, toUnixSeconds) => {
   const totalMinutes = Math.round((toUnixSeconds - fromUnixSeconds) / 60)
   return `${Math.floor(totalMinutes / 60)}시간 ${totalMinutes % 60}분`
 }
+
+/*
+  "2026년 8월 22일 09:02" — 환율 고시 시각처럼 보는 사람 기준의 시각이 맞는 값.
+
+  위의 formatLocal* 들과 다루는 방식이 정반대다.
+  날씨는 "그 도시의 현지 시각"이라야 의미가 있어서 오프셋을 직접 더했지만,
+  환율 고시 시각은 "내가 있는 곳에서 몇 시에 바뀌었나"가 알고 싶은 값이다.
+  그래서 브라우저 시간대를 그대로 쓰는 getFullYear/getHours 계열로 읽는다.
+*/
+export const formatDateTime = (unixSeconds) => {
+  const date = new Date(unixSeconds * 1000)
+  const day = `${date.getFullYear()}년 ${date.getMonth() + 1}월 ${date.getDate()}일`
+  return `${day} ${pad2(date.getHours())}:${pad2(date.getMinutes())}`
+}

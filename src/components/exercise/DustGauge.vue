@@ -31,7 +31,7 @@ const props = defineProps({
 
 const spec = computed(() => DUST_SPEC[props.type])
 
-// 등급 계산은 dustGrade 모듈이 담당한다. (상단 요약 표시와 같은 기준을 쓰기 위해)
+// 등급 계산은 dustGrade 모듈이 담당한다. (어느 화면에서 읽어도 같은 기준을 쓰기 위해)
 const grade = computed(() => getDustGrade(props.type, props.value))
 
 // 막대 바 채움 비율. 기준값을 넘어도 100%를 넘지 않도록 자른다.

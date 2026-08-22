@@ -97,16 +97,43 @@ const displayTemp = computed(() => configStore.convertTemp(props.city.temp))
 </template>
 
 <style scoped>
+/*
+  유리 3층. 가장 옅다.
+
+  이 카드는 목록에서 20장이 한 번에 그려지고 스크롤도 된다.
+  블러를 걸면 스크롤 프레임마다 20번 다시 계산되므로 절대 걸지 않는다.
+  대신 hover 에서만 한 단계 밝아지게 해서 눌리는 요소라는 것을 알린다.
+*/
 .city {
-  background-color: var(--p-surface-0);
-  border: 1px solid var(--p-surface-200);
-  border-radius: var(--p-border-radius-md);
+  background: var(--glass-inset);
+  border: 1px solid var(--glass-border-soft);
+  border-radius: var(--glass-radius-sm);
   padding: 14px 16px;
   margin-bottom: 10px;
+  /* transform 과 background 만 움직여 레이아웃 재계산이 일어나지 않게 한다 */
+  transition:
+    background 200ms ease,
+    border-color 200ms ease,
+    transform 200ms ease;
+}
+
+.city:hover {
+  background: var(--glass-panel);
+  border-color: var(--glass-border);
+  transform: translateY(-1px);
 }
 
 .city:last-child {
   margin-bottom: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .city {
+    transition: none;
+  }
+  .city:hover {
+    transform: none;
+  }
 }
 
 .city-info {

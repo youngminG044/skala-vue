@@ -75,7 +75,7 @@ const compass = computed(() => (city.value === null ? '' : getCompassDirection(c
 const load = () => {
   if (isKnownCity.value) {
     weatherStore.loadForecast(cityId.value)
-    // 상세 페이지를 보고 있는 동안에는 상단 요약도 이 도시를 가리키게 한다
+    // 상세 페이지를 보고 있는 동안에는 하늘 배경도 이 도시를 기준으로 삼는다
     selectedCityStore.selectCity(cityId.value)
   }
 }
@@ -202,10 +202,11 @@ const goHome = () => {
 </template>
 
 <style scoped>
+/* 유리 3층. 섹션 카드 안쪽의 내용 상자라 가장 옅게 둔다. */
 .detail-box {
-  background-color: var(--p-surface-0);
-  border: 1px solid var(--p-surface-200);
-  border-radius: var(--p-border-radius-md);
+  background: var(--glass-inset);
+  border: 1px solid var(--glass-border-soft);
+  border-radius: var(--glass-radius-sm);
   padding: 16px;
 }
 
@@ -254,13 +255,16 @@ const goHome = () => {
   margin: 0;
 }
 
-/* 각 칸을 옅은 박스로 감싸 그리드 경계를 눈에 보이게 한다 */
+/*
+  각 칸을 유리 조각으로 감싸 그리드 경계를 눈에 보이게 한다.
+  바깥 .detail-box 보다 한 단계 진하게 둬서 "위에 얹힌 칸"으로 읽히게 한다.
+*/
 .sun-item {
   min-width: 0;
   padding: 12px 14px;
-  background-color: var(--p-surface-50);
-  border: 1px solid var(--p-surface-200);
-  border-radius: var(--p-border-radius-md);
+  background: var(--glass-panel);
+  border: 1px solid var(--glass-border-soft);
+  border-radius: var(--glass-radius-sm);
 }
 
 .sun-label {
@@ -286,7 +290,7 @@ const goHome = () => {
 .sun-daylight {
   margin: 16px 0 0;
   padding-top: 14px;
-  border-top: 1px solid var(--p-surface-200);
+  border-top: 1px solid var(--glass-border-soft);
   font-size: 14px;
   color: var(--p-surface-600);
 }

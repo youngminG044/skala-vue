@@ -46,17 +46,42 @@ defineProps({
 </template>
 
 <style scoped>
-.dash-board-section {
+/*
+  유리 2층. 앱 껍데기(App.vue의 .container) 위에 얹히는 섹션 카드다.
+
+  여기에는 일부러 backdrop-filter 를 걸지 않는다.
+  껍데기가 이미 뒤를 흐려놨는데 여기서 또 흐리면 그 결과를 한 번 더 뭉개서
+  색이 빠지고 회색으로 탁해진다. 층은 반투명도와 테두리만으로 나눈다.
+  (블러가 화면당 한 장뿐이라 스크롤 성능도 그대로다)
+*/
+/* .p-card 를 함께 적어 glass.css 의 배경 초기화(.p-card.p-component)보다 위에 둔다 */
+.p-card.dash-board-section {
+  position: relative;
   margin-bottom: 14px;
-  /* Aura의 기본 카드 배경은 흰색이다. 안쪽 항목 상자와 층이 나뉘도록 한 단계 낮춘다. */
-  background-color: var(--p-surface-50);
-  border: 1px solid var(--p-surface-200);
+  background: var(--glass-panel);
+  border: 1px solid var(--glass-border-soft);
+  border-radius: var(--glass-radius-md);
+  box-shadow: var(--glass-shadow-sm);
+  transition:
+    background var(--sky-transition),
+    border-color var(--sky-transition);
+}
+
+/* 위 모서리 광택. 껍데기와 같은 재질이라는 신호를 준다. */
+.p-card.dash-board-section::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  border-radius: inherit;
+  background: linear-gradient(90deg, transparent, var(--glass-sheen), transparent);
+  opacity: 0.6;
+  pointer-events: none;
 }
 
 /*
   Card는 안쪽 여백을 자기 내부 요소에 준다.
   scoped 스타일은 자식 컴포넌트 내부까지 닿지 않으므로 :deep()으로 지정한다.
-  기본값이 커서 카드 안이 헐거워 보인다.
 */
 .dash-board-section :deep(.p-card-body) {
   padding: 16px;
