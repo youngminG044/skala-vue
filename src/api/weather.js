@@ -18,7 +18,7 @@ import { getSunPosition } from '@/utils/sunPosition'
 import { formatLocalTime } from '@/utils/time'
 
 // 세 API가 공통으로 쓰는 조회 조건.
-// units=metric 이라야 기온이 섭씨로 온다. (기본값은 켈빈)
+// units=metric 이여야 기온이 섭씨로 온다. (기본값은 켈빈)
 const metricParams = (city) => ({ lat: city.lat, lon: city.lon, units: 'metric' })
 
 /*

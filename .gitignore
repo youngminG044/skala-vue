@@ -41,9 +41,6 @@ __screenshots__/
 # 개인 작업 메모
 customization.md
 
-#트러블 슈팅
-troubleshooting.md
-
 # 환경 변수
 # 기본은 전부 무시하고, 비밀값이 없는 것만 예외로 커밋한다.
 #   .env.local            실제 API Key      -> 커밋 안 함
